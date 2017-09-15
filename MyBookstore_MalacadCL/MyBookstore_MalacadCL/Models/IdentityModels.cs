@@ -31,5 +31,7 @@ namespace MyBookstore_MalacadCL.Models
         }
 
         public System.Data.Entity.DbSet<MyBookstore_MalacadCL.Models.AuthorsModels> AuthorsModels { get; set; }
+
+        public System.Data.Entity.DbSet<MyBookstore_MalacadCL.Models.PublishersModels> PublishersModels { get; set; }
     }
 }
