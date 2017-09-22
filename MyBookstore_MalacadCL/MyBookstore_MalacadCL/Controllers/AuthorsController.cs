@@ -69,19 +69,50 @@ namespace MyBookstore_MalacadCL.Controllers
 
         // POST: Authors/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(AuthorsModels author)
         {
-            try
-            {
-                // TODO: Add insert logic here
+            //  try
+            //  {
+            //      // TODO: Add insert logic here
 
-                return RedirectToAction("Index");
-            }
-            catch
+            //      return RedirectToAction("Index");
+            //  }
+
+            //  catch
+            //  {
+            //      return View();
+            //  }
+
+            //  finally
+            //  {
+
+            //  }
+            using (SqlConnection con = new SqlConnection(Helper.GetCon()))
             {
-                return View();
+                con.Open();
+                string query = @"INSERT INTO authors VALUES
+                               (@authorLN,@authorFN,@authorPhone,
+                                @authorAddress,@authorCity,@authorState,
+                                @authorZip)";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@authorLN", author.LastName);
+                    cmd.Parameters.AddWithValue("@authorFN", author.FirstName);
+                    cmd.Parameters.AddWithValue("@authorPhone", author.Phone);
+                    cmd.Parameters.AddWithValue("@authorAddress", author.Address);
+                    cmd.Parameters.AddWithValue("@authorCity", author.City);
+                    cmd.Parameters.AddWithValue("@authorState", author.State);
+                    cmd.Parameters.AddWithValue("@authorZip", author.Zip);
+                    cmd.ExecuteNonQuery();
+                    return RedirectToAction("Index");
+
+                }
             }
+
+           
+
         }
+
 
         // GET: Authors/Edit/5
         public ActionResult Edit(int id)
