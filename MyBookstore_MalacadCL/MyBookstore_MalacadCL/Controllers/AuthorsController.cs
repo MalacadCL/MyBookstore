@@ -1,4 +1,6 @@
-﻿using MyBookstore_MalacadCL.App_Code;
+﻿using CrystalDecisions.CrystalReports.Engine;
+using CrystalDecisions.Shared;
+using MyBookstore_MalacadCL.App_Code;
 using MyBookstore_MalacadCL.Models;
 using System;
 using System.Collections.Generic;
@@ -229,6 +231,29 @@ namespace MyBookstore_MalacadCL.Controllers
             {
                 return View();
             }
+        }
+
+        public ActionResult GenerateReport()
+        {
+            ReportDocument rd = new ReportDocument();
+            rd.Load(Server.MapPath("~/Report/rptAuthors.rpt"));
+            rd.SetDatabaseLogon("malacadc", "Bianca2000", "TAFT-CL312", "MyBookstore");
+            rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, true, "Authors Report");
+            return View();
+        }
+
+        public ActionResult GenerateIndividualReport(int? id)
+        {
+            if (id == null)
+                return RedirectToAction("Index");
+
+            ReportDocument rd = new ReportDocument();
+            rd.Load(Server.MapPath("~/Report/rptAuthorIndividual.rpt"));
+            rd.SetDatabaseLogon("malacadc", "Bianca2000", "TAFT-CL312", "MyBookstore");
+            rd.SetParameterValue("authorID", id);
+            rd.SetParameterValue("Username", "Chayil Sean L. Malacad");
+            rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, true, "Author #" + id.ToString() + " Report");
+            return View();
         }
     }
 }
